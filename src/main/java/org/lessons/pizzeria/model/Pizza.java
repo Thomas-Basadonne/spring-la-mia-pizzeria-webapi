@@ -1,10 +1,18 @@
 package org.lessons.pizzeria.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "pizze")
 public class Pizza {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false, unique = true)
     private String name;
     private String description;
     private String photo;
+    @Column(nullable = false)
     private double price;
 
     public Integer getId() {
