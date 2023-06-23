@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -21,10 +22,28 @@ public class PizzaController {
     @Autowired
     private PizzaRepository pizzaRepository;
 
-    @GetMapping
+   /* @GetMapping
     public String list(Model model) {
         List<Pizza> pizze = pizzaRepository.findAll();
         model.addAttribute("pizzeList", pizze);
+        if (pizze.isEmpty()) {
+            model.addAttribute("noPizzeMessage", "Non ci sono pizze disponibili al momento.");
+        }
+        return "/pizza/index";
+    } */
+
+    @GetMapping
+    public String list(@RequestParam(name = "keyword", required = false) String searchString, Model model) {
+        List<Pizza> pizze;
+        // se non ho il param fai la ricerca all
+        if (searchString == null || searchString.isBlank()) {
+            pizze = pizzaRepository.findAll();
+        } else {
+            // altrimenti ricerca con param
+            pizze = pizzaRepository.findByName(searchString);
+        }
+        model.addAttribute("pizzeList", pizze);
+        model.addAttribute("searchInput", searchString == null ? "" : searchString);
         if (pizze.isEmpty()) {
             model.addAttribute("noPizzeMessage", "Non ci sono pizze disponibili al momento.");
         }

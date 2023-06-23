@@ -5,7 +5,18 @@
 <body>
 <nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
 <div class="container">
-    <h1>Lista pizze</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>Lista pizze</h1>
+        <form th:action="@{/pizze}" method="GET">
+            <div class="input-group input-group-sm">
+                <input type="search" class="form-control" placeholder="Cerca..." aria-label="Cerca" name="keyword"
+                       th:value="${searchInput}">
+                <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
+
+    </div>
+
 
     <div th:if="${not #lists.isEmpty(pizzeList)}">
         <table class="table table-striped">
@@ -23,7 +34,7 @@
                 <td th:text="${pizza.description}"></td>
                 <td th:text="${pizza.price}"></td>
                 <td>
-                    <a th:href="@{|/pizze/${pizza.id}|}">Info</a>
+                    <a th:href="@{|/pizze/${pizza.id}|}"><i class="fa-solid fa-circle-info"></i></a>
                 </td>
             </tr>
             </tbody>
