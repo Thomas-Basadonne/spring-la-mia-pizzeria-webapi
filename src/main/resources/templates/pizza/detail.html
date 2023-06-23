@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head(pageTitle ='Dettaglio Pizza')}">
+</head>
+<body>
+<nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
+<div class="container d-flex justify-content-center">
+    <div class="card w-50" th:object="${pizza}">
+        <img src="https://cdn.shopify.com/s/files/1/0586/6795/8427/articles/Margherita-9920.jpg?v=1644590028"
+             class="card-img-top img-fluid" alt="pizza">
+        <div class="card-body">
+            <h5 class="card-title" th:text="*{name}"></h5>
+            <p class="card-text" th:text="*{description}"></p>
+            <p class="fw-900" th:text="*{price}+€"></p>
+            <a th:href="@{/pizze}" class="btn btn-primary">Torna alla lista</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

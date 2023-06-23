@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <th:block th:fragment="head">
+    <th:block th:fragment="head(pageTitle)">
         <meta charset="UTF-8">
-        <title th:text="${title}"></title>
+        <title th:text="${pageTitle}"></title>
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.4.0/css/all.min.css}">
         <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}" defer="defer"></script>
     </th:block>
-
 </head>
 <body>
 
