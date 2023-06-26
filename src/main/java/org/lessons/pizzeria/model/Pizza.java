@@ -1,6 +1,10 @@
 package org.lessons.pizzeria.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
@@ -10,11 +14,18 @@ public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotBlank(message = "Il nome della pizza è obbligatorio")
+    @Size(max = 100, message = "Il nome della pizza non può superare i 100 caratteri")
     @Column(nullable = false, unique = true)
     private String name;
     @Lob
+    @NotBlank(message = "La descrizione della pizza è obbligatoria")
+    @Size(max = 250, message = "La descrizione della pizza non può superare i 250 caratteri")
     private String description;
+    @NotBlank(message = "L''URL della pizza è obbligatorio")
     private String photo;
+    @NotNull(message = "Il prezzo della pizza è obbligatorio")
+    @Min(value = 0, message = "Il prezzo della pizza non può essere inferiore a 0")
     @Column(nullable = false)
     private BigDecimal price;
 

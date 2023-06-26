@@ -1,11 +1,13 @@
 package org.lessons.pizzeria.controller;
 
+import jakarta.validation.Valid;
 import org.lessons.pizzeria.model.Pizza;
 import org.lessons.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -73,10 +75,17 @@ public class PizzaController {
 
     //Controller che gestisce il form della pagina create
     @PostMapping("/create")
-    public String store() {
-
+    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult) {
+        //dati pizza sono nell'oggetto formPizza
+        // controllo dati in validazione
+        if (bindingResult.hasErrors()) {
+            //ci sono errori!
+            //rigenero form con dati pizza pre caricati
+            return "/pizza/create";
+        }
+        //persisto formPizza, metodo save fa un create sql se non esiste oggetto con stessa pk se no update
+        pizzaRepository.save(formPizza);
         //redirect home se va tutto bene
         return "redirect:/pizze";
     }
-
 }
