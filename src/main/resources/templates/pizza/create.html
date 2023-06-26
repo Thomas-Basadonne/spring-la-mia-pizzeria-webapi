@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head(pageTitle ='Aggiunta Pizza')}">
+</head>
+<body>
+<nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
+<h1>pizza</h1>
+
+<form th:action="@{/pizze/create}"
+      th:object="${pizza}"
+      method="post"
+      id="pizza-form"
+      class="container"
+>
+    <div class="mb-3">
+        <label for="nome" class="form-label">Nome della pizza</label>
+        <input type="text" class="form-control" id="nome" th:field="*{name}">
+    </div>
+    <div class="mb-3">
+        <label for="descrizione" class="form-label">Descrizione della pizza</label>
+        <textarea class="form-control" id="descrizione" th:field="*{description}" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="img" class="form-label">URL foto della pizza</label>
+        <input type="url" class="form-control" id="img" th:field="*{photo}">
+    </div>
+    <div class="mb-3">
+        <label for="prezzo" class="form-label">Prezzo della pizza</label>
+        <input type="number" class="form-control" id="prezzo" th:field="*{price}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salva</button>
+    <a th:href="@{/pizze}" class="btn btn-danger">Torna alla lista</a>
+</form>
+</body>
+</html>

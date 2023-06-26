@@ -12,6 +12,7 @@ public class Pizza {
     private Integer id;
     @Column(nullable = false, unique = true)
     private String name;
+    @Lob
     private String description;
     private String photo;
     @Column(nullable = false)
