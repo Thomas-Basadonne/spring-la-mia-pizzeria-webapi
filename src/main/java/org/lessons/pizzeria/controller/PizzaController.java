@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -78,6 +79,10 @@ public class PizzaController {
     public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult) {
         //dati pizza sono nell'oggetto formPizza
         // controllo dati in validazione
+        if (!isUniqueName(formPizza)) {
+            //aggiungo a mano errore in BindingResult
+            bindingResult.addError(new FieldError("pizza", "name", formPizza.getName(), false, null, null, "Il nome deve essere unico"));
+        }
         if (bindingResult.hasErrors()) {
             //ci sono errori!
             //rigenero form con dati pizza pre caricati
@@ -88,4 +93,11 @@ public class PizzaController {
         //redirect home se va tutto bene
         return "redirect:/pizze";
     }
+
+    //metodo custom x controllo name unique nel db
+    private boolean isUniqueName(Pizza formPizza) {
+        List<Pizza> result = pizzaRepository.findByName(formPizza.getName());
+        return result.isEmpty(); // Restituisce true se il nome non esiste, false se esiste già
+    }
+
 }
