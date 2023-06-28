@@ -37,6 +37,8 @@
                 <td th:text="${pizza.price}"></td>
                 <td>
                     <a th:href="@{|/pizze/${pizza.id}|}"><i class="fa-solid fa-circle-info"></i></a>
+                    <a th:href="@{|/pizze/edit/${pizza.id}|}"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a th:href="@{|/pizze/${pizza.id}|}"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
             </tbody>

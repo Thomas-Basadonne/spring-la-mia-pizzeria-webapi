@@ -53,16 +53,10 @@ public class PizzaController {
     @GetMapping("/{id}")
     public String detail(@PathVariable("id") Integer pizzaId, Model model) {
         //cerca pizza con quell'id
-        Optional<Pizza> result = pizzaRepository.findById(pizzaId);
-
-        if (result.isPresent()) {
-            //passa pizza a view
-            model.addAttribute("pizza", result.get());
-            return "/pizza/detail";
-        } else {
-            //error 404
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza con ID " + pizzaId + "non trovata");
-        }
+        Pizza pizza = getPizzaById(pizzaId);
+        //passa pizza a view
+        model.addAttribute("pizza", pizza);
+        return "/pizza/detail";
 
 
     }
@@ -71,7 +65,8 @@ public class PizzaController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("pizza", new Pizza());
-        return "/pizza/create";
+        //return "/pizza/create";
+        return "/pizza/form"; // template unico create/update
     }
 
     //Controller che gestisce il form della pagina create
@@ -94,10 +89,38 @@ public class PizzaController {
         return "redirect:/pizze";
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        Pizza pizza = getPizzaById(id);
+        //recupero dati della pizza e la aggiungo al model
+        model.addAttribute("pizza", pizza);
+        return "/pizza/form"; // template unico create/update
+    }
+
+    @PostMapping("edit/{id}")
+    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult) {
+        Pizza pizzaToEdit = getPizzaById(id);//pizza prima di essere modificata
+        //trasferisco dati che non sono presenti nel form x non perderli
+        pizzaForm.setId(pizzaToEdit.getId());
+        //edit e salvataggio dati
+        pizzaRepository.save(pizzaForm);
+        return "redirect:/pizze";
+    }
+
     //metodo custom x controllo name unique nel db
     private boolean isUniqueName(Pizza formPizza) {
         List<Pizza> result = pizzaRepository.findByName(formPizza.getName());
         return result.isEmpty(); // Restituisce true se il nome non esiste, false se esiste già
     }
 
+    //metodo custom x selezionare pizza da db o tirare un eccezione
+    private Pizza getPizzaById(Integer id) {
+        //verifico se esite pizza con quel id
+        Optional<Pizza> result = pizzaRepository.findById(id);
+        // if not => 404
+        if (result.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza con id" + id + "non trovata");
+        }
+        return result.get();
+    }
 }
