@@ -1,6 +1,8 @@
 package org.lessons.pizzeria.controller;
 
 import jakarta.validation.Valid;
+import org.lessons.pizzeria.messages.AlertMessage;
+import org.lessons.pizzeria.messages.AlertMessageType;
 import org.lessons.pizzeria.model.Pizza;
 import org.lessons.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +74,7 @@ public class PizzaController {
 
     //Controller che gestisce il form della pagina create
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult) {
+    public String store(@Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         //dati pizza sono nell'oggetto pizzaForm
         // controllo dati in validazione
         if (!isUniqueName(pizzaForm)) {
@@ -86,6 +89,7 @@ public class PizzaController {
         //persisto pizzaForm, metodo save fa un create sql se non esiste oggetto con stessa pk se no update
         pizzaRepository.save(pizzaForm);
         //redirect home se va tutto bene
+        redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza aggiunta alla lista!"));
         return "redirect:/pizze";
     }
 
@@ -98,7 +102,7 @@ public class PizzaController {
     }
 
     @PostMapping("edit/{id}")
-    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult) {
+    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         Pizza pizzaToEdit = getPizzaById(id);//pizza prima di essere modificata
         //valido pizzaForm
         //se i nomi sono diversi dai errore
@@ -112,15 +116,18 @@ public class PizzaController {
         pizzaForm.setId(pizzaToEdit.getId());
         //edit e salvataggio dati
         pizzaRepository.save(pizzaForm);
+        redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza modificata con successo!"));
         return "redirect:/pizze";
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         //esiste il questa pizza?
         Pizza pizzaToDelete = getPizzaById(id);
         //lo cancelliamo
         pizzaRepository.delete(pizzaToDelete);
+        // add success message
+        redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Pizza " + pizzaToDelete.getName() + " cancellata!"));
         //redirect index
         return "redirect:/pizze";
     }
@@ -137,7 +144,7 @@ public class PizzaController {
         Optional<Pizza> result = pizzaRepository.findById(id);
         // if not => 404
         if (result.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza con id" + id + "non trovata");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza con id " + id + " non trovata");
         }
         return result.get();
     }

@@ -5,6 +5,14 @@
 <body>
 <nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
 <div class="container">
+    <!-- messaggio delete -->
+    <div th:if="${message != null and message.type != null}" class="alert  alert-dismissible fade show" role="alert"
+         th:classAppend="${#strings.equalsIgnoreCase(message.type, 'SUCCESS')} ? 'alert-success' : 'alert-danger'">
+        <div th:text="${message.message}"></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
     <h1>Lista pizze</h1>
     <div class="d-flex justify-content-between align-items-center">
         <a type="button" class="btn btn-danger" th:href="@{/pizze/create}">Aggiungi Pizza</a>
