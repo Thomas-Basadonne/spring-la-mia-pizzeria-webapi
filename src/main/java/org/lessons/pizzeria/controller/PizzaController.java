@@ -71,20 +71,20 @@ public class PizzaController {
 
     //Controller che gestisce il form della pagina create
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("pizza") Pizza formPizza, BindingResult bindingResult) {
-        //dati pizza sono nell'oggetto formPizza
+    public String store(@Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult) {
+        //dati pizza sono nell'oggetto pizzaForm
         // controllo dati in validazione
-        if (!isUniqueName(formPizza)) {
+        if (!isUniqueName(pizzaForm)) {
             //aggiungo a mano errore in BindingResult
-            bindingResult.addError(new FieldError("pizza", "name", formPizza.getName(), false, null, null, "Il nome deve essere unico"));
+            bindingResult.addError(new FieldError("pizza", "name", pizzaForm.getName(), false, null, null, "Il nome deve essere unico"));
         }
         if (bindingResult.hasErrors()) {
             //ci sono errori!
             //rigenero form con dati pizza pre caricati
             return "/pizza/create";
         }
-        //persisto formPizza, metodo save fa un create sql se non esiste oggetto con stessa pk se no update
-        pizzaRepository.save(formPizza);
+        //persisto pizzaForm, metodo save fa un create sql se non esiste oggetto con stessa pk se no update
+        pizzaRepository.save(pizzaForm);
         //redirect home se va tutto bene
         return "redirect:/pizze";
     }
@@ -100,6 +100,14 @@ public class PizzaController {
     @PostMapping("edit/{id}")
     public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult) {
         Pizza pizzaToEdit = getPizzaById(id);//pizza prima di essere modificata
+        //valido pizzaForm
+        //se i nomi sono diversi dai errore
+        if (!pizzaToEdit.getName().equals(pizzaForm.getName()) && !isUniqueName(pizzaForm)) {
+            bindingResult.addError(new FieldError("pizza", "name", pizzaForm.getName(), false, null, null, "Il nome deve essere unico"));
+        }
+        if (bindingResult.hasErrors()) {
+            return "pizza/form";
+        }
         //trasferisco dati che non sono presenti nel form x non perderli
         pizzaForm.setId(pizzaToEdit.getId());
         //edit e salvataggio dati
@@ -107,9 +115,19 @@ public class PizzaController {
         return "redirect:/pizze";
     }
 
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        //esiste il questa pizza?
+        Pizza pizzaToDelete = getPizzaById(id);
+        //lo cancelliamo
+        pizzaRepository.delete(pizzaToDelete);
+        //redirect index
+        return "redirect:/pizze";
+    }
+
     //metodo custom x controllo name unique nel db
-    private boolean isUniqueName(Pizza formPizza) {
-        List<Pizza> result = pizzaRepository.findByName(formPizza.getName());
+    private boolean isUniqueName(Pizza pizzaForm) {
+        List<Pizza> result = pizzaRepository.findByName(pizzaForm.getName());
         return result.isEmpty(); // Restituisce true se il nome non esiste, false se esiste già
     }
 
