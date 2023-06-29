@@ -4,8 +4,8 @@
 </head>
 <body>
 <nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
-<div class="container d-flex justify-content-center">
-    <div class="card w-50" th:object="${pizza}">
+<div class="container  d-flex justify-content-center flex-column align-items-center" th:object="${pizza}">
+    <div class="card w-50">
         <img src="https://cdn.shopify.com/s/files/1/0586/6795/8427/articles/Margherita-9920.jpg?v=1644590028"
              class="card-img-top img-fluid" alt="pizza">
         <div class="card-body">
@@ -15,6 +15,56 @@
             <a th:href="@{/pizze}" class="btn btn-primary">Torna alla lista</a>
         </div>
     </div>
+
+
+    <!--OFFERTE-->
+    <h2 class="my-3 text-danger fw-bold">Offerte disponibili per la pizza <span th:text="*{name}"></span></h2>
+
+    <div class="d-flex justify-content-center align items center ">
+        <div th:each="specialOffer : *{specialOffers}" class="mx-4">
+            <p>
+                <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                        th:data-bs-target="'#collapse' + ${specialOffer.id}" aria-expanded="false"
+                        th:aria-controls="'collapse' + ${specialOffer.id}" th:text="${specialOffer.title}"></button>
+            </p>
+            <div style="min-height: 120px;">
+                <div class="collapse collapse-horizontal"
+                     th:id="'collapse' + ${specialOffer.id}" th:attr="aria-labelledby='heading' + ${specialOffer.id}">
+
+                    <div class="card card-body" style="width: 300px;">
+                        <p>Data di inizio: <span
+                                th:text="${#temporals.format(specialOffer.startDate, 'dd/MM/yyyy')}"></span></p>
+                        <p>Data di fine: <span
+                                th:text="${#temporals.format(specialOffer.endDate, 'dd/MM/yyyy')}"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--  <div>
+         <div class="accordion" id="offerAccordion" th:object="${specialOffer}">
+             <div class="accordion-item" th:each="offer : ${pizza.specialOffers}">
+                 <h2 class="accordion-header" id="offerHeading${offer.id}">
+                     <button th:text="*{offer.title}" class="accordion-button collapsed" type="button"
+                             data-bs-toggle="collapse" th:data-bs-target="'#offerCollapse' + ${offer.id}"
+                             aria-expanded="false" th:aria-controls="'offerCollapse' + ${offer.id}">
+
+                     </button>
+                 </h2>
+                  <div id="offerCollapse${offer.id}" class="accordion-collapse collapse">
+                       <div class="accordion-body">
+                           <p>Data di inizio: <span th:text="*{#temporals.format(startDate, 'dd/MM/yyyy')}"></span></p>
+                           <p>Data di fine: <span th:text="*{#temporals.format(endDate, 'dd/MM/yyyy')}"></span></p>
+                       </div>
+                   </div>
+
+             </div>
+         </div>
+     </div>-->
+
 </div>
 </body>
 </html>
