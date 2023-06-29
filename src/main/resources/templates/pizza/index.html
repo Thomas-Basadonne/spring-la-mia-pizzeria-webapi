@@ -46,10 +46,14 @@
                 <td class="d-flex justify-content-evenly align-items-center">
                     <a th:href="@{|/pizze/${pizza.id}|}" class="mx-1"><i class="fa-solid fa-circle-info"></i></a>
                     <a th:href="@{|/pizze/edit/${pizza.id}|}" class="mx-1"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form th:action="@{|/pizze/delete/${pizza.id}|}" method="post">
+                    <form th:action="@{|/pizze/delete/${pizza.id}|}" method="post"
+                          th:if="${#lists.isEmpty(pizza.specialOffers)}">
                         <button class="p-0 border-0 text-danger bg-transparent" type="submit"><i
                                 class="fa-solid fa-trash"></i></button>
                     </form>
+                    <button th:unless="${#lists.isEmpty(pizza.specialOffers)}" disabled
+                            class="p-0 border-0 text-danger bg-transparent"
+                            type="submit"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>
             </tbody>
