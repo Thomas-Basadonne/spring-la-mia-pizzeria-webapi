@@ -40,10 +40,10 @@
                                     th:text="${#temporals.format(specialOffer.endDate, 'dd/MM/yyyy')}"></span>
                             </p>
                             <div class="d-flex align-items-center justify-content-center">
-                                <a th:href="@{|/offers/edit/*{id}|}" class="mx-1">
+                                <a th:href="@{|/offers/edit/${specialOffer.id}|}" class="mx-1">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <form th:action="@{|/pizze/delete/*{id}|}" method="post">
+                                <form th:action="@{|/offers/delete/${specialOffer.id}|}" method="post">
                                     <button class="p-0 border-0 text-danger bg-transparent" type="submit">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>

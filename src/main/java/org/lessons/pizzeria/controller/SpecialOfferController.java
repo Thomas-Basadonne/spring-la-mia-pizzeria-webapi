@@ -81,4 +81,14 @@ public class SpecialOfferController {
     }
 
 
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        Optional<SpecialOffer> specialOfferToDelete = specialOfferRepository.findById(id);
+        if (specialOfferToDelete.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        //se esiste cancellalo
+        specialOfferRepository.delete(specialOfferToDelete.get());
+        return "redirect:/pizze/" + specialOfferToDelete.get().getPizza().getId();
+    }
 }
