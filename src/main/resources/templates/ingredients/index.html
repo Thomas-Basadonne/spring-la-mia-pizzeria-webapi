@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{/fragments/resources :: head(pageTitle ='Lista Ingredienti')}">
+</head>
+<body>
+<nav th:replace="~{/fragments/navbar :: navbar(current = 'ingredients')}"></nav>
+<div class="container">
+    <h1>Ingredienti:</h1>
+    <hr>
+    <!-- lista ingredienti -->
+    <div class="row">
+        <div class="col-6">
+            <ul class="list-group" th:if="${ingredients != null and ingredients.size() > 0}">
+                <li class="list-group-item" th:each="ingredient : ${ingredients}" th:object="${ingredient}"
+                    th:text="*{name}"></li>
+            </ul>
+            <div class="alert alert-info" th:unless="${ingredients != null and ingredients.size() > 0}">Non ci sono
+                ingredienti nella lista :(
+            </div>
+        </div>
+        <div class="col-6">
+            <!-- form add ingredienti -->
+            <form id="category-form"
+                  method="post"
+                  th:action="@{/ingredients/save}"
+                  th:object="${ingredientObj}">
+                <label class="form-label" for="nome">Nome dell'ingrediente</label>
+                <input class="form-control" id="nome"
+                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                       th:field="*{name}"
+                       type="text">
+                <div class="invalid-feedback"
+                     th:errors="*{name}"
+                     th:if="${#fields.hasErrors('name')}">
+                </div>
+                <div class="col-12 text-center my-4">
+                    <button class="btn btn-primary" type="submit">Salva</button>
+                    <button class="btn btn-danger" type="reset">Annulla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

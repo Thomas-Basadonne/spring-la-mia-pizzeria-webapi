@@ -6,8 +6,8 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="navbar(current)">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Pizzeria da Thomas</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -15,6 +15,10 @@
                 <li class="nav-item">
                     <a class="nav-link" th:classappend="${current == 'pizze' ? 'active' : ''}"
                        th:href="@{/pizze}">Pizze</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${current == 'ingredients' ? 'active' : ''}"
+                       th:href="@{/ingredients}">Ingredienti</a>
                 </li>
             </ul>
         </div>
