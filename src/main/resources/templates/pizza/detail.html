@@ -52,16 +52,17 @@
     </div>
     <a class="btn btn-info" th:href="@{/offers/create(pizzaId=${pizza.id})}" type="button">Aggiungi offerta</a>
 
-    <div class="">
-        <h2> ingredienti:</h2>
-        <ul th:if="*{ingredients.size() > 0}">
-            <li th:each="ingredient : *{ingredients}" th:text="${ingredient.name}"></li>
+    <div>
+        <h2>ingredienti:</h2>
+        <!--L'operatore di sicurezza di navigazione ? viene utilizzato per accedere alle proprietà di un oggetto solo se l'oggetto stesso non è null.  -->
+        <ul th:if="${pizza.ingredients?.size() > 0}">
+            <li th:each="ingredient : ${pizza.ingredients}" th:text="${ingredient.name}"></li>
         </ul>
-        <div class="alert alert-info"
-             th:unless="*{ingredients.size() > 0}">
+        <div class="alert alert-info" th:unless="${pizza.ingredients?.size() > 0}">
             Non sono stati aggiunti ingredienti
         </div>
     </div>
+
 
 </div>
 </body>

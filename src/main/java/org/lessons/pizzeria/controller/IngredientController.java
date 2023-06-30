@@ -2,12 +2,15 @@ package org.lessons.pizzeria.controller;
 
 import jakarta.validation.Valid;
 import org.lessons.pizzeria.model.Ingredient;
+import org.lessons.pizzeria.model.Pizza;
 import org.lessons.pizzeria.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +60,17 @@ public class IngredientController {
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
+        //prima di eliminare ingrediente la dissocio dalle pizze
+        Optional<Ingredient> result = ingredientRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        //ingrediente da eliminare
+        Ingredient ingredientToDelete = result.get();
+        for (Pizza pizza : ingredientToDelete.getPizze()) {
+            pizza.getIngredients().remove(ingredientToDelete);
+        }
+
         ingredientRepository.deleteById(id);
         return "redirect:/ingredients";
     }
