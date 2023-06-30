@@ -18,7 +18,7 @@
                                 <a class="mx-1" th:href="@{/ingredients(edit=*{id})}">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <form method="post" th:action="@{||}">
+                                <form method="post" th:action="@{|/ingredients/delete/*{id}|}">
                                     <button class="p-0 border-0 text-danger bg-transparent" type="submit">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>

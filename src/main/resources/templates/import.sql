@@ -22,3 +22,24 @@ VALUES
     ('Pizza Prosciutto e Funghi', 'Pizza semplice ma gustosa con prosciutto, funghi e mozzarella.', 'https://cdn.shopify.com/s/files/1/0586/6795/8427/articles/Margherita-9920.jpg?v=1644590028', 10.99),
     ('Pizza Calzone', 'Calzone ripieno di mozzarella, pomodoro, prosciutto e funghi.', 'https://cdn.shopify.com/s/files/1/0586/6795/8427/articles/Margherita-9920.jpg?v=1644590028', 11.99),
     ('Pizza Frutti di Mare', 'Pizza con frutti di mare freschi come gamberetti, cozze, vongole e calamari.', 'https://cdn.shopify.com/s/files/1/0586/6795/8427/articles/Margherita-9920.jpg?v=1644590028', 13.99);
+
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (1, 6);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (3, 3);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (8, 5);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (4, 7);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (2, 9);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (6, 4);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (5, 10);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (10, 1);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (9, 8);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (7, 2);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (3, 10);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (8, 4);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (1, 7);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (5, 2);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (2, 1);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (9, 6);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (10, 3);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (4, 8);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (6, 5);
+INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (7, 9);

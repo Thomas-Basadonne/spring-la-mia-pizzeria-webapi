@@ -25,7 +25,8 @@
             <div class="mx-4" th:each="specialOffer : *{specialOffers}">
                 <p>
                     <button aria-expanded="false" class="btn btn-primary" data-bs-toggle="collapse"
-                            th:aria-controls="'collapse' + ${specialOffer.id}" th:data-bs-target="'#collapse' + ${specialOffer.id}"
+                            th:aria-controls="'collapse' + ${specialOffer.id}"
+                            th:data-bs-target="'#collapse' + ${specialOffer.id}"
                             th:text="${specialOffer.title}" type="button"></button>
                 </p>
                 <div style="min-height: 120px;">
@@ -51,6 +52,14 @@
     </div>
     <a class="btn btn-info" th:href="@{/offers/create(pizzaId=${pizza.id})}" type="button">Aggiungi offerta</a>
 
+    <div class="">
+        <h2> ingredienti:</h2>
+        <ul th:if="*{ingredients.size() > 0}">
+            <li th:each="ingredient : *{ingredients}" th:text="${ingredient.name}"></li>
+        </ul>
+        <div class="alert alert-info" th:text="Non sono stati aggiunti ingredienti"
+             th:unless="*{ingredients.size() > 0}"></div>
+    </div>
 
 </div>
 </body>
