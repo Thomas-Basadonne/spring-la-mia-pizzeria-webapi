@@ -1,6 +1,8 @@
 package org.lessons.pizzeria.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "ingredients")
@@ -9,6 +11,8 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
+    @Size(min = 4, max = 100)
     @Column(nullable = false)
     private String name;
 

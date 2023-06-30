@@ -6,13 +6,13 @@
 <nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
 <div class="container  d-flex justify-content-center flex-column align-items-center" th:object="${pizza}">
     <div class="card w-50">
-        <img th:src="*{photo}"
-             class="card-img-top img-fluid" alt="pizza">
+        <img alt="pizza"
+             class="card-img-top img-fluid" th:src="*{photo}">
         <div class="card-body">
             <h5 class="card-title" th:text="*{name}"></h5>
             <p class="card-text" th:text="*{description}"></p>
             <p class="fw-900" th:text="*{price}+€"></p>
-            <a th:href="@{/pizze}" class="btn btn-primary">Torna alla lista</a>
+            <a class="btn btn-primary" th:href="@{/pizze}">Torna alla lista</a>
         </div>
     </div>
 
@@ -22,16 +22,16 @@
 
     <div th:if="${pizza.specialOffers.size() > 0}">
         <div class="d-flex justify-content-center align items center ">
-            <div th:each="specialOffer : *{specialOffers}" class="mx-4">
+            <div class="mx-4" th:each="specialOffer : *{specialOffers}">
                 <p>
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-                            th:data-bs-target="'#collapse' + ${specialOffer.id}" aria-expanded="false"
-                            th:aria-controls="'collapse' + ${specialOffer.id}" th:text="${specialOffer.title}"></button>
+                    <button aria-expanded="false" class="btn btn-primary" data-bs-toggle="collapse"
+                            th:aria-controls="'collapse' + ${specialOffer.id}" th:data-bs-target="'#collapse' + ${specialOffer.id}"
+                            th:text="${specialOffer.title}" type="button"></button>
                 </p>
                 <div style="min-height: 120px;">
                     <div class="collapse collapse-horizontal"
-                         th:id="'collapse' + ${specialOffer.id}"
-                         th:attr="aria-labelledby='heading' + ${specialOffer.id}">
+                         th:attr="aria-labelledby='heading' + ${specialOffer.id}"
+                         th:id="'collapse' + ${specialOffer.id}">
 
                         <div class="card card-body" style="width: 300px;">
                             <p>Data di inizio: <span
@@ -39,16 +39,7 @@
                             <p>Data di fine: <span
                                     th:text="${#temporals.format(specialOffer.endDate, 'dd/MM/yyyy')}"></span>
                             </p>
-                            <div class="d-flex align-items-center justify-content-center">
-                                <a th:href="@{|/offers/edit/${specialOffer.id}|}" class="mx-1">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <form th:action="@{|/offers/delete/${specialOffer.id}|}" method="post">
-                                    <button class="p-0 border-0 text-danger bg-transparent" type="submit">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -58,7 +49,7 @@
     <div class="alert alert-info my-3" th:unless="${pizza.specialOffers.size() > 0}">
         Nessuna offerta :(
     </div>
-    <a type="button" class="btn btn-info" th:href="@{/offers/create(pizzaId=${pizza.id})}">Aggiungi offerta</a>
+    <a class="btn btn-info" th:href="@{/offers/create(pizzaId=${pizza.id})}" type="button">Aggiungi offerta</a>
 
 
 </div>

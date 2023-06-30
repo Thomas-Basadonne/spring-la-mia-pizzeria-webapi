@@ -71,6 +71,11 @@ public class SpecialOfferController {
 
     @PostMapping("/edit/{id}")
     public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("specialOffer") SpecialOffer formSpecialOffer, BindingResult bindingResult) {
+        //valido
+        if (bindingResult.hasErrors()) {
+            return "/offers/form";
+        }
+
         Optional<SpecialOffer> specialOfferToEdit = specialOfferRepository.findById(id);
         if (specialOfferToEdit.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
