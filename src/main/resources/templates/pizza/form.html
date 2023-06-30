@@ -71,10 +71,18 @@
         <!--ingredienti -->
         <div class="col-4">
             <h3>ingredienti</h3>
+
+            <div class="form-check" th:each="ingredient : ${ingredientList}">
+                <input class="form-check-input" th:field="*{ingredients}" th:id="${'ingredient_' + ingredient.id}"
+                       th:value="${ingredient.id}"
+                       type="checkbox">
+                <label class="form-check-label" th:for="${'ingredient_' + ingredient.id}"
+                       th:text="${ingredient.name}"></label>
+            </div>
         </div>
 
 
-        <div class="col-12 justify-self-center align-self-center">
+        <div class="col-12 text-center my-3">
             <button class="btn btn-primary" type="submit">Salva</button>
             <a class="btn btn-danger" th:href="@{/pizze}">Annulla</a>
         </div>

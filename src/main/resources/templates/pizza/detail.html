@@ -57,8 +57,10 @@
         <ul th:if="*{ingredients.size() > 0}">
             <li th:each="ingredient : *{ingredients}" th:text="${ingredient.name}"></li>
         </ul>
-        <div class="alert alert-info" th:text="Non sono stati aggiunti ingredienti"
-             th:unless="*{ingredients.size() > 0}"></div>
+        <div class="alert alert-info"
+             th:unless="*{ingredients.size() > 0}">
+            Non sono stati aggiunti ingredienti
+        </div>
     </div>
 
 </div>

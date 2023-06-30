@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.lessons.pizzeria.messages.AlertMessage;
 import org.lessons.pizzeria.messages.AlertMessageType;
 import org.lessons.pizzeria.model.Pizza;
+import org.lessons.pizzeria.repository.IngredientRepository;
 import org.lessons.pizzeria.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,9 @@ public class PizzaController {
     // dipende dalla repository
     @Autowired
     private PizzaRepository pizzaRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
    /* @GetMapping
     public String list(Model model) {
@@ -68,13 +72,16 @@ public class PizzaController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("pizza", new Pizza());
+        // add lista ingredienti x checkbox
+        model.addAttribute("ingredientList", ingredientRepository.findAll());
+
         //return "/pizza/create";
         return "/pizza/form"; // template unico create/update
     }
 
     //Controller che gestisce il form della pagina create
     @PostMapping("/create")
-    public String store(@Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String store(@Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         //dati pizza sono nell'oggetto pizzaForm
         // controllo dati in validazione
         if (!isUniqueName(pizzaForm)) {
@@ -84,8 +91,11 @@ public class PizzaController {
         if (bindingResult.hasErrors()) {
             //ci sono errori!
             //rigenero form con dati pizza pre caricati
-            return "/pizza/create";
+            // add lista ingredienti x checkbox
+            model.addAttribute("ingredientList", ingredientRepository.findAll());
+            return "/pizza/form";
         }
+        System.out.println(pizzaForm.getIngredients());
         //persisto pizzaForm, metodo save fa un create sql se non esiste oggetto con stessa pk se no update
         pizzaRepository.save(pizzaForm);
         //redirect home se va tutto bene
@@ -98,11 +108,13 @@ public class PizzaController {
         Pizza pizza = getPizzaById(id);
         //recupero dati della pizza e la aggiungo al model
         model.addAttribute("pizza", pizza);
+        // add lista ingredienti x checkbox
+        model.addAttribute("ingredientList", ingredientRepository.findAll());
         return "/pizza/form"; // template unico create/update
     }
 
     @PostMapping("edit/{id}")
-    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String doEdit(@PathVariable Integer id, @Valid @ModelAttribute("pizza") Pizza pizzaForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         Pizza pizzaToEdit = getPizzaById(id);//pizza prima di essere modificata
         //valido pizzaForm
         //se i nomi sono diversi dai errore
@@ -110,6 +122,8 @@ public class PizzaController {
             bindingResult.addError(new FieldError("pizza", "name", pizzaForm.getName(), false, null, null, "Il nome deve essere unico"));
         }
         if (bindingResult.hasErrors()) {
+            // add lista ingredienti x checkbox
+            model.addAttribute("ingredientList", ingredientRepository.findAll());
             return "pizza/form";
         }
         //trasferisco dati che non sono presenti nel form x non perderli
