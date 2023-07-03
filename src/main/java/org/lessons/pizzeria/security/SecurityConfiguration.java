@@ -47,7 +47,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/pizze/edit/**").hasAuthority("ADMIN")
                 .requestMatchers("/pizze/create").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST).hasAuthority("ADMIN")
-
                 .requestMatchers("/pizze/**").hasAnyAuthority("ADMIN", "USER")
                 .requestMatchers("/offers/**").hasAuthority("ADMIN")
                 .requestMatchers("/**").permitAll()

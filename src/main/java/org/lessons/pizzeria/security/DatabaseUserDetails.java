@@ -12,7 +12,6 @@ import java.util.Set;
 
 public class DatabaseUserDetails implements UserDetails {
 
-    private final Integer id;
     private final String username;
     private final String password;
     private final Set<GrantedAuthority> authorities;
@@ -20,7 +19,6 @@ public class DatabaseUserDetails implements UserDetails {
     //costruttore che copia i dati di uno user x costruire un Databaseuserdetails
     public DatabaseUserDetails(User user) {
         //copio campi corrispondenti
-        this.id = user.getId();
         this.username = user.getEmail();
         this.password = user.getPassword();
 
