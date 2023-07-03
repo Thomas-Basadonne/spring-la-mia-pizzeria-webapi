@@ -43,3 +43,30 @@ INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (10, 3);
 INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (4, 8);
 INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (6, 5);
 INSERT INTO pizza_ingredient (pizza_id, ingredient_id) VALUES (7, 9);
+
+
+
+INSERT INTO users (first_name, last_name, email, password)
+VALUES ('John', 'Doe', 'johndoe@example.com', 'password123');
+
+INSERT INTO users (first_name, last_name, email, password)
+VALUES ('Jane', 'Smith', 'janesmith@example.com', 'abc123');
+
+INSERT INTO users (first_name, last_name, email, password)
+VALUES ('Michael', 'Johnson', 'michaeljohnson@example.com', 'qwerty');
+
+INSERT INTO users (first_name, last_name, email, password)
+VALUES ('Emily', 'Williams', 'emilywilliams@example.com', 'pass123');
+
+
+-- Associazione dell'utente con id=1 al ruolo con id=1 (ruolo admin)
+INSERT INTO users_roles (user_id, roles_id) VALUES (1, 1);
+
+-- Associazione dell'utente con id=2 al ruolo con id=1 (ruolo admin)
+INSERT INTO users_roles (user_id, roles_id) VALUES (2, 1);
+
+-- Associazione dell'utente con id=3 al ruolo con id=2 (ruolo user)
+INSERT INTO users_roles (user_id, roles_id) VALUES (3, 2);
+
+-- Associazione dell'utente con id=4 al ruolo con id=2 (ruolo user)
+INSERT INTO users_roles (user_id, roles_id) VALUES (4, 2);
