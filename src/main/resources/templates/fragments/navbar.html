@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 </head>
 <body>
@@ -16,7 +16,7 @@
                     <a class="nav-link" th:classappend="${current == 'pizze' ? 'active' : ''}"
                        th:href="@{/pizze}">Pizze</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                     <a class="nav-link" th:classappend="${current == 'ingredients' ? 'active' : ''}"
                        th:href="@{/ingredients}">Ingredienti</a>
                 </li>

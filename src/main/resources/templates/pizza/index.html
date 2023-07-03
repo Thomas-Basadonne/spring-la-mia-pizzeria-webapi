@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{/fragments/resources :: head(pageTitle ='Lista Pizze')}">
 </head>
 <body>
 <nav th:replace="~{/fragments/navbar :: navbar(current = 'pizze')}"></nav>
 <div class="container">
     <!-- messaggio delete -->
-    <div th:if="${message != null and message.type != null}" class="alert  alert-dismissible fade show" role="alert"
-         th:classAppend="${#strings.equalsIgnoreCase(message.type, 'SUCCESS')} ? 'alert-success' : 'alert-danger'">
+    <div class="alert  alert-dismissible fade show" role="alert"
+         th:classAppend="${#strings.equalsIgnoreCase(message.type, 'SUCCESS')} ? 'alert-success' : 'alert-danger'"
+         th:if="${message != null and message.type != null}">
         <div th:text="${message.message}"></div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
     </div>
 
 
     <h1>Lista pizze</h1>
     <div class="d-flex justify-content-between align-items-center">
-        <a type="button" class="btn btn-danger" th:href="@{/pizze/create}">Aggiungi Pizza</a>
+        <a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:href="@{/pizze/create}" type="button">Aggiungi
+            Pizza</a>
 
-        <form th:action="@{/pizze}" method="GET">
+        <form method="GET" th:action="@{/pizze}">
             <div class="input-group input-group-sm">
-                <input type="search" class="form-control" placeholder="Cerca..." aria-label="Cerca" name="keyword"
-                       th:value="${searchInput}">
+                <input aria-label="Cerca" class="form-control" name="keyword" placeholder="Cerca..."
+                       th:value="${searchInput}"
+                       type="search">
                 <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </form>
@@ -44,15 +47,18 @@
                 <td th:text="${pizza.description}"></td>
                 <td th:text="${pizza.price}"></td>
                 <td class="d-flex justify-content-evenly align-items-center">
-                    <a th:href="@{|/pizze/${pizza.id}|}" class="mx-1"><i class="fa-solid fa-circle-info"></i></a>
-                    <a th:href="@{|/pizze/edit/${pizza.id}|}" class="mx-1"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form th:action="@{|/pizze/delete/${pizza.id}|}" method="post"
+                    <a class="mx-1" th:href="@{|/pizze/${pizza.id}|}"><i class="fa-solid fa-circle-info"></i></a>
+                    <a class="mx-1" sec:authorize="hasAuthority('ADMIN')" th:href="@{|/pizze/edit/${pizza.id}|}"><i
+                            class="fa-solid fa-pen-to-square"></i></a>
+                    <form method="post" th:action="@{|/pizze/delete/${pizza.id}|}"
                           th:if="${#lists.isEmpty(pizza.specialOffers)}">
-                        <button class="p-0 border-0 text-danger bg-transparent" type="submit"><i
+                        <button class="p-0 border-0 text-danger bg-transparent" sec:authorize="hasAuthority('ADMIN')"
+                                type="submit"><i
                                 class="fa-solid fa-trash"></i></button>
                     </form>
-                    <button th:unless="${#lists.isEmpty(pizza.specialOffers)}" disabled
-                            class="p-0 border-0 text-danger bg-transparent"
+                    <button class="p-0 border-0 text-danger bg-transparent" disabled
+                            sec:authorize="hasAuthority('ADMIN')"
+                            th:unless="${#lists.isEmpty(pizza.specialOffers)}"
                             type="submit"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>

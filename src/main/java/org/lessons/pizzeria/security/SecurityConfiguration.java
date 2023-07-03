@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
+
     /* per definire un AuthenticationProvider ho bisogno di:
     - uno UserDetailsService
     - un PasswordEncoder
@@ -25,6 +26,9 @@ public class SecurityConfiguration {
     //PasswordEncoder
     @Bean
     PasswordEncoder passwordEncoder() {
+        // BCryptPasswordEncoder cripta una password
+        // BCryptPasswordEncoder EncodeObj = new BCryptPasswordEncoder();
+        //System.out.println(EncodeObj.encode("password123"));
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
@@ -53,6 +57,5 @@ public class SecurityConfiguration {
                 .and().formLogin()
                 .and().logout();
         return http.build();
-
     }
 }
