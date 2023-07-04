@@ -1,5 +1,6 @@
 package org.lessons.pizzeria.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ public class Pizza {
     @Min(value = 0, message = "Il prezzo della pizza non può essere inferiore a 0")
     @Column(nullable = false)
     private BigDecimal price;
+    @JsonIgnore
     @OneToMany(mappedBy = "pizza")
     private List<SpecialOffer> specialOffers; //relazione offerte
 
