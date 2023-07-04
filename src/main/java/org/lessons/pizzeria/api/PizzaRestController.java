@@ -1,8 +1,11 @@
 package org.lessons.pizzeria.api;
 
 import jakarta.validation.Valid;
+import org.lessons.pizzeria.exceptions.InvalidPizzaNameExceptions;
+import org.lessons.pizzeria.exceptions.PizzaNotFoundExceptions;
 import org.lessons.pizzeria.model.Pizza;
 import org.lessons.pizzeria.repository.PizzaRepository;
+import org.lessons.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,19 +25,24 @@ public class PizzaRestController {
     @Autowired
     private PizzaRepository pizzaRepository;
 
+    @Autowired
+    private PizzaService pizzaService;
+
     //servizio per lista pizze
     @GetMapping
-    public List<Pizza> index() {
-        return pizzaRepository.findAll();
+    public List<Pizza> index(@RequestParam Optional<String> keyword) {
+        //return pizzaRepository.findAll();
+        //utilizzo pizza service x ricerca
+        return pizzaService.gettAll(keyword);
     }
 
     //servizio detail pizza
     @GetMapping("/{id}")
     public Pizza get(@PathVariable Integer id) {
-        Optional<Pizza> pizza = pizzaRepository.findById(id);
-        if (pizza.isPresent()) {
-            return pizza.get();
-        } else {
+        //cerco pizza by id sul db
+        try {
+            return pizzaService.getById(id);
+        } catch (PizzaNotFoundExceptions e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
@@ -42,7 +50,11 @@ public class PizzaRestController {
     //servizio x create pizza, arriva come JSON nel request body
     @PostMapping
     public Pizza create(@Valid @RequestBody Pizza pizza) {
-        return pizzaRepository.save(pizza);
+        try {
+            return pizzaService.create(pizza);
+        } catch (InvalidPizzaNameExceptions e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //servizio x cancellare pizza
