@@ -16,7 +16,9 @@
         </div>
     </div>
 
-
+    <div>
+        <img alt="pic" class="img-fluid" th:src="@{|/files/pic/*{id}|}">
+    </div>
     <!--OFFERTE-->
     <h2 class="my-3 text-danger fw-bold">Offerte disponibili per la pizza <span th:text="*{name}"></span></h2>
 

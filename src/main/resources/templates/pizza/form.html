@@ -10,6 +10,7 @@
 <div class="container">
     <form
             class="row"
+            enctype="multipart/form-data"
             id="pizza-form"
             method="post"
             th:action="@{${formAction}}"
@@ -54,6 +55,23 @@
                 <div class="invalid-feedback"
                      th:errors="*{photo}"
                      th:if="${#fields.hasErrors('photo')}">
+                </div>
+
+            </div>
+            <!-- input file pic -->
+            <div class="mb-3">
+                <label class="picFile" for="picFile">Aggiungi file Img</label>
+                <input class="form-control"
+                       id="picFile" th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"
+                       th:field="*{picFile}"
+                       type="file"
+                >
+                <div class="invalid-feedback"
+                     th:errors="*{picFile}"
+                     th:if="${#fields.hasErrors('picFile')}">
+                </div>
+                <div>
+                    <img alt="current-pic" class="img-fluid" th:src="@{|/files/pic/*{id}|}">
                 </div>
             </div>
             <div class="mb-3">
